@@ -205,7 +205,7 @@ fonte_resultado = ("Segoe UI", 11, "bold")
 # =========================
 
 card = tk.Frame(janela, bg="white", bd=1, relief="solid")
-card.place(relx=0.5, rely=0.5, anchor="center", width=450, height=480)
+card.place(relx=0.5, rely=0.5, anchor="center", width=450, height=600)
 
 # =========================
 # TÍTULO
