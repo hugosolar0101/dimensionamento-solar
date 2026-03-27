@@ -8,7 +8,13 @@ from tkinter import messagebox
 
 def caminho_arquivo(nome):
     if getattr(sys, 'frozen', False):
-        return os.path.join(os.path.dirname(sys.executable), nome)
+        pasta = os.path.join(os.environ['LOCALAPPDATA'], "Dimensionamento")
+        
+        if not os.path.exists(pasta):
+            os.makedirs(pasta)
+        
+        return os.path.join(pasta, nome)
+    
     return nome
 
 # conexão
@@ -134,9 +140,12 @@ def on_leave(e):
     botao_limpar.config(bg="#e74c3c")  # vermelho padrão
 
 def obter_versao_local():
-    if os.path.exists("versao.txt"):
-        with open("versao.txt", "r") as f:
+    caminho = caminho_arquivo("versao.txt")
+    
+    if os.path.exists(caminho):
+        with open(caminho, "r") as f:
             return f.read().strip()
+    
     return "0.0"
 
 def obter_versao_online():
@@ -171,11 +180,11 @@ def atualizar_banco():
         # baixar banco novo
         r = requests.get(URL_BANCO)
 
-        with open("DIM2026.db", "wb") as f:
+        with open(caminho_arquivo("DIM2026.db"), "wb") as f:
             f.write(r.content)
 
         # atualizar versão local
-        with open("versao.txt", "w") as f:
+        with open(caminho_arquivo("versao.txt"), "w") as f:
             f.write(versao_online)
 
         messagebox.showinfo("Sucesso", "Banco atualizado! Reinicie o programa.")
